@@ -17,25 +17,12 @@ if (isTouch) root.classList.add('is-touch');
 const OFFICIAL_BUY = 'https://www.durex.com.cn/buy';
 const PACK_IDS = ['3', '6', '16'];
 
+// Neutral by design: the three packs differ only in count. No "best for"
+// recommendations — nothing verified supports one.
 const PACK_COPY = {
-  3: {
-    tag: '轻装初识',
-    desc: '小盒随身，适合第一次认识 AiR。',
-    box: '方形盒装',
-    note: '包装图形依据官方产品图重新绘制，仅作示意。',
-  },
-  6: {
-    tag: '日常常备',
-    desc: '修长盒型，放进抽屉或旅行包都不占地方。',
-    box: '竖长盒装',
-    note: '包装图形依据官方产品图重新绘制，仅作示意。',
-  },
-  16: {
-    tag: '长期之选',
-    desc: '大容量装，适合已经确定喜欢 AiR 的你。',
-    box: '大盒装（外观以实物为准）',
-    note: '16只装外包装未经本页核对，此处为示意，请以官方渠道实物为准。',
-  },
+  3: { box: '方形盒装', note: '盒面依据官方产品图重新绘制，仅作示意。' },
+  6: { box: '竖长盒装', note: '盒面依据官方产品图重新绘制，仅作示意。' },
+  16: { box: '盒型未经核对', note: '16只装外包装本页尚未核对，画面中的盒型为示意，请以官方渠道实物为准。' },
 };
 
 let currentPack = 3;
@@ -53,7 +40,7 @@ function useFallback() {
     try { stage.destroy(); } catch (err) { /* context already gone */ }
   }
   stage = null;
-  root.classList.remove('has-set-title', 'scene-ready');
+  root.classList.remove('scene-ready');
   if (!fallback) fallback = createFallback();
   fallback.setPack(currentPack);
 }
@@ -65,7 +52,7 @@ try {
     onYaw: (y) => yawListeners.forEach((fn) => fn(y)),
     onPull: (p) => pullListeners.forEach((fn) => fn(p)),
     onAnchor: (x, y, vis) => anchorFn(x, y, vis),
-    onFirstFrame: () => root.classList.add('scene-ready', 'has-set-title'),
+    onFirstFrame: () => root.classList.add('scene-ready'),
     onLost: () => useFallback(),
   });
 } catch (err) {
@@ -81,8 +68,7 @@ const specs = $('#specs');
 const faq = $('#faq');
 const header = $('#siteHeader');
 const pullCopy = $('#pullCopy');
-const pullLine = $('#pullLine');
-const pullDone = $('#pullDone');
+const pullInside = $('#pullInside');
 const pullControl = $('#pullControl');
 const navLinks = $$('[data-nav]');
 const sectionsForNav = ['hero', 'feel', 'specs', 'packs', 'faq', 'buy'].map((id) => document.getElementById(id));
@@ -114,30 +100,17 @@ function progressFromScroll(y) {
 
 let lastT = 0;
 let lastPull = 0;
-let lineMetrics = null;
-function measureLine() {
-  const a = pullLine.querySelector('.pl-a');
-  lineMetrics = { aw: a.getBoundingClientRect().width, lh: a.getBoundingClientRect().height };
-}
 function applyBeats() {
-  // the line completes with the pull, not with time: "准备好，" waits, "再靠近"
-  // rises to meet it; the guide gives way to the name, a fact and the next step
+  // the chapter copy is complete from the start; taking a sachet out only
+  // brings the "what is inside" panel forward
   const near = 1 - smoothstep(0.18, 0.42, Math.abs(lastT - 1));
   const p = stage ? lastPull : 1;
-  const k = smoothstep(0.08, 0.92, p);
-  if (!lineMetrics || !lineMetrics.aw) measureLine();
-  const { aw, lh } = lineMetrics;
-  pullLine.style.setProperty('--ay', `${(k * 0.5 * lh).toFixed(1)}px`);
-  pullLine.style.setProperty('--bx', `${(-(1 - k) * aw).toFixed(1)}px`);
-  pullLine.style.setProperty('--by', `${(((1 - k) * 1.0 + k * 0.5) * lh).toFixed(1)}px`);
-  pullLine.style.setProperty('--bo', (0.42 + 0.58 * k).toFixed(3));
+  const done = smoothstep(0.75, 0.98, p);
   pullCopy.style.setProperty('--o', near.toFixed(3));
-  pullCopy.style.setProperty('--guide', (1 - smoothstep(0.55, 0.85, p)).toFixed(3));
-  const done = smoothstep(0.8, 0.98, p);
   pullCopy.style.setProperty('--done', done.toFixed(3));
   pullCopy.classList.toggle('is-visible', near > 0.01);
-  pullDone.classList.toggle('is-on', done > 0.5 && near > 0.5);
-  pullDone.inert = !(done > 0.5 && near > 0.5);
+  pullCopy.inert = near < 0.5;
+  pullInside.classList.toggle('is-on', done > 0.5);
   pullControl.classList.toggle('is-visible', near > 0.5 && !!stage);
 }
 
@@ -189,7 +162,6 @@ window.addEventListener('scroll', () => {
 
 function relayout() {
   measure();
-  lineMetrics = null;
   if (stage) stage.resize();
   onScroll();
 }
@@ -290,7 +262,7 @@ function syncYaw(y) {
   });
   const back = Math.abs(deg) > 90;
   flipBtn.setAttribute('aria-pressed', String(back));
-  flipBtn.textContent = back ? '回到正面' : '翻到背面';
+  flipBtn.textContent = back ? '回到正面' : '看背面';
 }
 yawListeners.push(syncYaw);
 
@@ -371,7 +343,8 @@ flipBtn.addEventListener('click', () => {
 const pullZone = $('#pullZone');
 const pullHint = $('#pullHint');
 const pullSlider = $('#pullSlider');
-const pullReset = $('#pullReset');
+const pullAuto = $('#pullAuto');
+const pullAutoLabel = $('#pullAutoLabel');
 
 function pullText(p) {
   if (p < 0.03) return '在盒中';
@@ -384,10 +357,10 @@ pullListeners.push((p) => {
   pullSlider.style.setProperty('--p', p.toFixed(4));
   pullSlider.setAttribute('aria-valuenow', String(Math.round(p * 100)));
   pullSlider.setAttribute('aria-valuetext', pullText(p));
-  pullReset.disabled = p < 0.01 && (!stage || stage.getPullTarget() < 0.01);
+  const out = stage ? stage.getPullTarget() > 0.5 : false;
+  pullAutoLabel.textContent = out ? '放回盒中' : '取出一只';
   applyBeats();
 });
-pullReset.disabled = true;
 
 let hintShown = 0;
 anchorFn = (x, y, vis) => {
@@ -415,6 +388,8 @@ function bindPullDrag(el, { fromPosition = false } = {}) {
   };
   el.addEventListener('pointerdown', (e) => {
     if (!stage || e.button !== 0) return;
+    // over the carton only a mouse or pen pulls; a finger keeps scrolling the page
+    if (!fromPosition && e.pointerType === 'touch') return;
     on = true;
     startY = e.clientY;
     startP = stage.getPullTarget();
@@ -455,10 +430,9 @@ pullSlider.addEventListener('keydown', (e) => {
   else return;
   e.preventDefault();
 });
-pullReset.addEventListener('click', () => {
+pullAuto.addEventListener('click', () => {
   if (!stage) return;
-  stage.setPull(0, { follow: false });
-  pullSlider.focus({ preventScroll: true });
+  stage.setPull(stage.getPullTarget() > 0.5 ? 0 : 1, { follow: false });
 });
 
 // window light follows the pointer (mouse anywhere; touch inside the chapter)
@@ -497,9 +471,7 @@ function selectPack(n, { animate = true, persist = true } = {}) {
   const c = PACK_COPY[n];
   radios.forEach((r) => { r.checked = Number(r.value) === n; });
   picker.style.setProperty('--i', String([3, 6, 16].indexOf(n)));
-  ps('tag').textContent = c.tag;
   ps('title').textContent = `杜蕾斯隐薄空气套 AiR Feel · ${n}只装`;
-  ps('desc').textContent = c.desc;
   ps('count').textContent = `${n} 只`;
   ps('box').textContent = c.box;
   ps('note').textContent = c.note;

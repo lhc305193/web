@@ -118,10 +118,16 @@ export function createStage(canvas, {
   let time = 0;
   let dirty = true;
   let selected = 3;
-  let prevSelected = 3;
   let camSelX = 0;
+  // in-place swap: the outgoing pack settles down and out, the chosen one
+  // rises into the same mark (~340 ms in total)
+  const SWAP_MS = 340;
+  let swap = null;
 
   const drag = { on: false, vel: 0 };
+  // the soft key drifts a little with the pointer, so the foil and the pearl
+  // board answer the hand; it eases back to rest when the pointer leaves
+  const light = { x: 0, y: 0, tx: 0, ty: 0 };
   let yawAnim = null;
   const pull = { p: 0, target: 0, lambda: 20, hover: 0, hoverTarget: 0, touched: false, reported: -1 };
 
@@ -256,19 +262,27 @@ export function createStage(canvas, {
       onYaw(userYaw[dragTarget()]);
     }
 
-    // packs: the selected one is the subject; the previously selected one stays
-    // only while the camera is still travelling away from it. Packs the pan
-    // passes over are never shown, so the frame never suggests a wrong choice.
-    const panning = Math.abs(camSelX - selX) > 0.01;
-    if (!panning) prevSelected = selected;
+    // packs: in the range shot only one pack is ever on the mark. A change of
+    // selection plays a short swap; nothing else is passed through on the way.
+    let sp = 1;
+    if (swap) {
+      sp = Math.min(1, (now - swap.start) / swap.dur);
+      if (sp >= 1) swap = null;
+    }
+    const showing = swap && sp < 0.42 ? swap.from : selected;
+    const phase = swap ? (sp < 0.42 ? 1 - sp / 0.42 : (sp - 0.42) / 0.58) : 1;
+    const settle = smooth(phase);
     for (const id of Object.keys(roots)) {
       const L = LAYOUT.packs[id];
       const root = roots[id];
       const n = Number(id);
       const wYaw = n === 3 ? Math.max(shot.drag, shot.range) : shot.range;
-      root.rotation.y = L.yaw + userYaw[id] * wYaw;
-      const inRange = n === selected || (panning && n === prevSelected);
-      root.visible = n === 3 ? (shot.range < 0.5 || inRange) : (shot.range > 0.02 && inRange);
+      const inRange = shot.range >= 0.5;
+      root.visible = inRange ? n === showing : n === 3;
+      const k = inRange && n === showing ? settle : 1;
+      root.rotation.y = L.yaw + userYaw[id] * wYaw - (1 - k) * 0.22;
+      root.position.y = -(1 - k) * 0.06;
+      root.scale.setScalar(0.94 + 0.06 * k);
     }
     if (t > 1.3 && !destroyed) for (const id of [6, 16]) if (!models[id]) buildPack(id);
 
@@ -302,14 +316,18 @@ export function createStage(canvas, {
     // main light: a large soft source upper-left, aimed at whatever is in frame
     const aimX = THREE.MathUtils.lerp(0, camSelX, shot.range);
     set.soft.target.position.set(aimX + 0.1, 0.55, 0.2);
-    set.soft.position.set(aimX - 3.6, 6.2, 6.4);
+    light.x = damp(light.x, light.tx, rm ? 40 : 2.6, dt);
+    light.y = damp(light.y, light.ty, rm ? 40 : 2.6, dt);
+    set.soft.position.set(aimX - 3.6 + light.x * 1.6, 6.2 + light.y * 0.9, 6.4);
     set.soft.target.updateMatrixWorld();
 
     // band: one narrow stripe crosses the top seal while the sachet leaves the mouth
     const [b0, b1] = PULL.band;
     const s = THREE.MathUtils.clamp((pe - b0) / (b1 - b0), 0, 1);
     const env = s > 0 && s < 1 ? Math.sin(Math.PI * s) : 0;
-    set.key.intensity = env * 7.5;
+    // the slit light used to sweep the seal; it read as a post-production scan
+    // line and also struck the wall, so it stays dark
+    set.key.intensity = 0 * env;
     bandAim.set(THREE.MathUtils.lerp(-0.62, 0.62, s) * HALF, HALF * 0.86, 0.01);
     pulled.localToWorld(bandAim);
     set.key.target.position.copy(bandAim);
@@ -333,7 +351,9 @@ export function createStage(canvas, {
       Math.abs(t - tTarget) > 1e-4 ||
       Math.abs(camSelX - LAYOUT.packs[selected].x) > 1e-4 ||
       Math.abs(pull.p - pull.target) > 1e-4 ||
-      Math.abs(pull.hover - pull.hoverTarget) > 1e-3
+      Math.abs(pull.hover - pull.hoverTarget) > 1e-3 ||
+      Math.abs(light.x - light.tx) + Math.abs(light.y - light.ty) > 1e-3 ||
+      !!swap
     );
   }
 
@@ -499,6 +519,18 @@ export function createStage(canvas, {
       pull.hoverTarget = on ? 1 : 0;
       dirty = true;
     },
+    // ── light follows the pointer (normalised device coords) ──
+    pointerMove(x, y) {
+      if (reducedMotion) return;
+      light.tx = THREE.MathUtils.clamp(x, -1, 1);
+      light.ty = THREE.MathUtils.clamp(y, -1, 1);
+      dirty = true;
+    },
+    pointerLeave() {
+      light.tx = 0;
+      light.ty = 0;
+      dirty = true;
+    },
     // ── turntable ──
     dragStart() {
       drag.on = true;
@@ -542,7 +574,10 @@ export function createStage(canvas, {
     setPack(id) {
       if (!PACKS[id] || destroyed) return;
       buildPack(id);
-      if (id !== selected) prevSelected = selected;
+      if (id !== selected) {
+        // swap only when it would be seen; otherwise just change the subject
+        swap = reducedMotion || !active || shot.range < 0.5 ? null : { from: selected, start: performance.now(), dur: SWAP_MS };
+      }
       selected = id;
       dirty = true;
       onYaw(userYaw[dragTarget()]);

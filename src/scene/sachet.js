@@ -143,10 +143,12 @@ function buildGeometry(S, seg = 220) {
   const cx = 0.022 * S;
   const cy = -0.014 * S;
   const r = rand(19);
-  const creases = Array.from({ length: 7 }, () => {
+  const creases = Array.from({ length: 12 }, () => {
     const ang = r() * Math.PI;
-    return { dx: Math.cos(ang), dy: Math.sin(ang), f: (16 + r() * 22) / S, ph: r() * 6.28, a: 0.0011 * S * (0.5 + r()) };
+    return { dx: Math.cos(ang), dy: Math.sin(ang), f: (10 + r() * 30) / S, ph: r() * 6.28, a: 0.0009 * S * (0.4 + r()) };
   });
+  // the pressed-through ring wanders a little, so it never reads as a stamped tray
+  const ringPh = [r() * 6.28, r() * 6.28];
   const ss = THREE.MathUtils.smoothstep;
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i);
@@ -154,12 +156,14 @@ function buildGeometry(S, seg = 220) {
     const dEdge = Math.min(half - Math.abs(x), half - Math.abs(y));
     const inside = ss(dEdge, band * 0.95, band + 0.09 * S);
     const rr = Math.hypot((x - cx) / 1.04, y - cy);
-    const ring = 0.011 * S * Math.exp(-(((rr - R0) / ringW) ** 2));
+    const th = Math.atan2(y - cy, x - cx);
+    const Rw = R0 * (1 + 0.028 * Math.sin(3 * th + ringPh[0]) + 0.016 * Math.sin(5 * th + ringPh[1]));
+    const ring = 0.0095 * S * (0.85 + 0.15 * Math.sin(2 * th + ringPh[1])) * Math.exp(-(((rr - Rw) / ringW) ** 2));
     const disc = 0.0035 * S * (1 - ss(rr, R0 * 0.4, R0 * 0.95));
     const pillow = 0.0055 * S * inside * (1 - 0.3 * (Math.hypot(x, y) / (half * 1.41)) ** 2);
     let wr = 0;
     for (const c of creases) wr += c.a * Math.sin((c.dx * x + c.dy * y) * c.f + c.ph);
-    wr *= 0.7 * Math.exp(-(((rr - R0 * 1.3) / (0.2 * S)) ** 2));
+    wr *= 0.35 + 0.45 * Math.exp(-(((rr - R0 * 1.3) / (0.2 * S)) ** 2));
     pos.setZ(i, pillow + inside * (ring + disc + wr));
   }
   geo.computeVertexNormals();
@@ -180,8 +184,8 @@ export function createSachet() {
       alphaMap: maps.alpha,
       alphaTest: 0.5,
       side: THREE.DoubleSide,
-      clearcoat: 0.25,
-      clearcoatRoughness: 0.12,
+      clearcoat: 0.12,
+      clearcoatRoughness: 0.2,
       anisotropy: 0.35,
       envMapIntensity: 1.15,
     });

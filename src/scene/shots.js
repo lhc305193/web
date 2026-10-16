@@ -6,21 +6,25 @@ import * as THREE from 'three';
 // 1 open  — the lid opens; the viewer draws one sachet out by hand. The
 //           camera stays put; the sachet settles above-left of the pack
 //           (≤ ~30% of frame height) and the line completes beside them.
-// 2 range — only the selected pack is in frame; the others sit far apart
-//           on the same sweep, so a selection is a short pan between them.
+// 2 range — only the selected pack is in frame; a selection swaps it in
+//           place with a short settle (see stage.js).
+// The wall line is no longer printed in any shot: the product name and its
+// one verified reason are set in HTML beside the pack.
 
 export const LAYOUT = {
   packs: {
+    // all three stand on the same mark: a selection swaps the pack in place
+    // instead of panning the camera past the ones not chosen
     3: { x: 0, z: 0, yaw: -0.42 },
-    6: { x: 5.6, z: 0, yaw: -0.4 },
-    16: { x: 11.2, z: 0, yaw: -0.36 },
+    6: { x: 0, z: 0, yaw: -0.4 },
+    16: { x: 0, z: 0, yaw: -0.36 },
   },
 };
 
 const D = [
   {
     cam: [-0.5, 1.85, 5.7], look: [-0.62, 0.86, 0.1], fov: 28,
-    title: { x: -3.05, y: 1.74, w: 2.55, op: 1 },
+    title: { x: -3.05, y: 1.74, w: 2.55, op: 0 },
     lid: 0, drag: 1, range: 0,
   },
   {
@@ -38,12 +42,12 @@ const D = [
 
 const P = [
   {
-    cam: [0.15, 1.95, 8.6], look: [0.08, 0.36, 0], fov: 31,
-    title: { x: -0.86, y: 1.9, w: 1.78, op: 1 },
+    cam: [0.15, 1.95, 8.6], look: [0.08, 0.53, 0], fov: 31,
+    title: { x: -0.86, y: 1.9, w: 1.78, op: 0 },
     lid: 0, drag: 1, range: 0,
   },
   {
-    cam: [0.25, 3.25, 9.0], look: [0.14, 0.45, 0], fov: 31,
+    cam: [0.25, 3.25, 9.0], look: [0.14, 0.24, 0], fov: 31,
     title: { x: -0.86, y: 1.9, w: 1.78, op: 0 },
     lid: 1, drag: 0, range: 0,
   },
@@ -66,14 +70,14 @@ export const PULL = {
   band: [0.1, 0.48], // p window in which the narrow light band crosses the seal
   rest: {
     wide: { pos: [-0.62, 1.9, 0.85], yaw: 0.16, roll: -0.12, tilt: -0.06 },
-    portrait: { pos: [-0.14, 2.0, 0.85], yaw: 0.1, roll: -0.1, tilt: -0.06 },
+    portrait: { pos: [-0.14, 1.86, 0.85], yaw: 0.1, roll: -0.1, tilt: -0.06 },
   },
 };
 
 export function makeShot() {
   return {
     cam: new THREE.Vector3(), look: new THREE.Vector3(), fov: 27,
-    title: { x: 0, y: 0, w: 1, op: 1 },
+    title: { x: 0, y: 0, w: 1, op: 0 },
     lid: 0, drag: 0, range: 0,
   };
 }

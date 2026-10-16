@@ -5,6 +5,7 @@
 - `assets-src/blender/tex/tex3-*.png`：从本项目 `packArt.js` 导出的五张重绘包装面图，供后续本地材质制作，不是实物摄影。
 - `src/scene/` 中盒装、银袋、环境和场景：当前工程的程序几何、程序贴图与灯光，是现有网站资产。
 - `reference/current/`：当前网站的四张过程截图，只作改前参考。
+- 2026-10-16 精修未新增任何图片、模型、影片或第三方素材；新增的只有源码改动与 `scripts/build-preview.mjs`（本项目自写）。
 
 产品资料来源：https://www.durex.com.cn/products-air/air 。官方渠道：https://www.durex.com.cn/buy 。
 
