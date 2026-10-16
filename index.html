@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Durex AiR · 让感受先到（非官方创意展示）</title>
+  <meta name="description" content="杜蕾斯隐薄空气套 AiR Feel 的非官方创意展示：薄度升级*、无色透明、直壁平面结构，3/6/16只装，官方渠道选购。" />
+  <meta name="theme-color" content="#06185a" />
+  <meta name="color-scheme" content="light" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='4' y='16' width='56' height='32' rx='16' fill='%231546b8'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23fff'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/src/styles.css" />
+  <script>
+    // Entrance state only exists when scripts run; if the app never starts,
+    // the page falls back to fully visible text after a short grace period.
+    document.documentElement.classList.add('js-loading');
+    setTimeout(function () { document.documentElement.classList.remove('js-loading'); }, 2500);
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#specs">跳到产品资料</a>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="dx-pill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#3a72e0" />
+        <stop offset=".55" stop-color="#1546b8" />
+        <stop offset="1" stop-color="#0d3591" />
+      </linearGradient>
+      <symbol id="durex-mark" viewBox="0 0 124 50">
+        <rect x="1" y="1" width="122" height="48" rx="24" fill="#fff" />
+        <rect x="4.2" y="4.2" width="115.6" height="41.6" rx="20.8" fill="url(#dx-pill)" />
+        <text x="62" y="33.4" text-anchor="middle" fill="#fff" font-family="'Arial Rounded MT Bold','Arial Rounded MT','Helvetica Neue',Arial,sans-serif" font-weight="700" font-size="27" letter-spacing="-0.6">durex</text>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Fixed product stage: live 3D canvas + static fallback -->
+  <div class="stage" id="stage" aria-hidden="true">
+    <canvas id="scene"></canvas>
+    <div class="fallback" id="fallback">
+      <div class="fallback-box" id="fallbackBox">
+        <div class="fb-face fb-front"></div>
+        <div class="fb-face fb-side"></div>
+        <div class="fb-face fb-top"></div>
+      </div>
+    </div>
+  </div>
+
+  <header class="site-header" id="siteHeader">
+    <a class="brand" href="#hero" aria-label="回到开场">
+      <svg class="brand-mark" aria-hidden="true"><use href="#durex-mark" /></svg>
+      <span class="brand-air">AiR</span>
+    </a>
+    <span class="concept-tag" title="本页为非官方创意展示，并非杜蕾斯官方网站">非官方创意展示</span>
+    <nav class="primary-nav" aria-label="页面导航">
+      <a href="#feel" data-nav="feel">感受</a>
+      <a href="#specs" data-nav="specs">产品资料</a>
+      <a href="#packs" data-nav="packs">规格</a>
+      <a href="#faq" data-nav="faq">问答</a>
+      <a href="#buy" data-nav="buy">选购</a>
+    </nav>
+    <a class="header-cta" href="https://www.durex.com.cn/buy" target="_blank" rel="noopener noreferrer" aria-label="打开杜蕾斯官方店铺列表（新窗口）">官方店铺<span class="ext" aria-hidden="true">↗</span></a>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="menu" aria-label="打开菜单">
+      <span class="menu-toggle-lines" aria-hidden="true"><i></i><i></i></span>
+      <span class="menu-toggle-label">菜单</span>
+    </button>
+  </header>
+
+  <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="页面导航" hidden>
+    <div class="menu-inner">
+      <p class="menu-kicker">Durex AiR · 让感受先到</p>
+      <nav aria-label="移动端导航">
+        <a href="#hero"><span>00</span>开场</a>
+        <a href="#feel"><span>01</span>打开这一盒</a>
+        <a href="#specs"><span>02</span>产品资料</a>
+        <a href="#packs"><span>03</span>规格选择</a>
+        <a href="#faq"><span>04</span>常见问题</a>
+        <a href="#buy"><span>05</span>官方选购</a>
+      </nav>
+      <a class="btn btn-silver menu-buy" href="https://www.durex.com.cn/buy" target="_blank" rel="noopener noreferrer">打开官方店铺<span class="ext" aria-hidden="true">↗</span></a>
+      <p class="menu-note">非官方创意展示 · 产品与价格以杜蕾斯官方渠道为准</p>
+      <button class="menu-close" type="button" data-menu-close>关闭菜单</button>
+    </div>
+  </div>
+
+  <main id="main">
+    <!-- 00 · Opening -->
+    <section class="hero" id="hero" aria-labelledby="heroTitle" data-scene="0">
+      <div class="hero-copy">
+        <p class="eyebrow">杜蕾斯隐薄空气套 · <span class="latin">AiR Feel</span></p>
+        <h1 class="hero-title" id="heroTitle">让感受先到</h1>
+        <p class="hero-lead"><strong>薄度升级<sup>*</sup></strong>，享受亲密欢愉。<br />3只装 · 6只装 · 16只装</p>
+        <div class="hero-actions">
+          <a class="btn btn-silver" href="#feel">打开这一盒<span class="arrow" aria-hidden="true">↓</span></a>
+          <a class="btn btn-ghost" href="https://www.durex.com.cn/buy" target="_blank" rel="noopener noreferrer" aria-label="打开杜蕾斯官方店铺列表（新窗口），规格需在店内确认">打开官方店铺<span class="ext" aria-hidden="true">↗</span></a>
+        </div>
+        <p class="hero-foot">* 相较于上一代杜蕾斯AiR隐薄空气<sup>®</sup>套。规格与价格请在官方店铺内确认。</p>
+      </div>
+
+      <div class="drag-zone hero-drag" data-drag-zone="hero" tabindex="0" role="slider" aria-label="在台面上转动 3只装包装：左右拖动或使用方向键" aria-valuemin="-180" aria-valuemax="180" aria-valuenow="0" aria-valuetext="正面">
+        <button class="drag-hint" type="button" data-spin>
+          <span class="dh-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.6M20 12a8 8 0 0 1-13.7 5.6" /><path d="M17.7 3v3.4h-3.4M6.3 21v-3.4h3.4" /></svg></span>
+          <span class="dh-text">拖动转盒 · 点此环视</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 01 · Feel: continuous product & material chapter -->
+    <section class="feel" id="feel" aria-label="产品感受" data-scene="1">
+      <div class="feel-sticky">
+        <div class="feel-touch" id="feelTouch" aria-hidden="true"></div>
+        <!-- grab area over the open carton: drag up to pull a sachet out and closer -->
+        <div class="pull-zone" id="pullZone" aria-hidden="true"></div>
+        <div class="pull-hint" id="pullHint" aria-hidden="true">
+          <span class="ph-arrow"><i></i></span><span class="ph-text">按住银袋，向上拉</span>
+        </div>
+        <div class="pull-control" id="pullControl">
+          <span class="pc-label pc-top" aria-hidden="true">取出</span>
+          <div class="pc-track" id="pullSlider" role="slider" tabindex="0" aria-orientation="vertical"
+            aria-label="取出一只银袋：用上下方向键调节，Home 放回盒中，End 完全取出"
+            aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="在盒中">
+            <span class="pc-fill"></span><span class="pc-thumb"></span>
+          </div>
+          <span class="pc-label pc-bottom" aria-hidden="true">盒中</span>
+          <button class="chip pc-reset" type="button" id="pullReset">放回盒中</button>
+        </div>
+        <div class="pull-copy" id="pullCopy">
+          <p class="pc-kicker">01 / 准备好，再靠近</p>
+          <h2 class="pull-line" id="pullLine"><span class="pl-a">准备好，</span><span class="pl-b">再靠近</span></h2>
+          <p class="pull-guide">按住盒中的银袋向上拉，取出一只；<br />松手停住，往回推就放回。</p>
+          <div class="pull-done" id="pullDone">
+            <p class="pd-name">杜蕾斯隐薄空气套 <span class="latin">AiR Feel</span></p>
+            <p class="pd-fact"><strong>薄度升级<sup>*</sup></strong>，相较于上一代杜蕾斯AiR隐薄空气<sup>®</sup>套。</p>
+            <div class="pd-actions">
+              <a class="btn btn-silver" href="#packs">选规格<span class="arrow" aria-hidden="true">→</span></a>
+              <a class="text-link" href="#specs">产品资料</a>
+            </div>
+            <p class="pd-note">画面中的盒与银袋均为包装示意，以实物为准；透明度、结构与尺寸见“产品资料”。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 · Specs -->
+    <section class="specs" id="specs" aria-labelledby="specsTitle">
+      <div class="wrap">
+        <header class="section-head">
+          <p class="section-kicker">02 · 产品资料</p>
+          <h2 class="section-title" id="specsTitle">一层薄膜的全部信息</h2>
+          <p class="section-sub">以下内容整理自杜蕾斯中国官网产品页，以实际包装与说明书为准。</p>
+        </header>
+
+        <div class="specs-grid">
+          <figure class="profile">
+            <svg class="profile-svg" viewBox="0 0 660 270" role="img" aria-labelledby="profileTitle profileDesc">
+              <title id="profileTitle">AiR Feel 结构示意图</title>
+              <desc id="profileDesc">平放状态的结构线稿：直壁平面结构、顶端储精囊、标称宽度 52 毫米。非实际比例。</desc>
+              <defs>
+                <linearGradient id="pf-fill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#ffffff" stop-opacity=".95" />
+                  <stop offset=".5" stop-color="#dfe6f2" stop-opacity=".55" />
+                  <stop offset="1" stop-color="#ffffff" stop-opacity=".9" />
+                </linearGradient>
+                <linearGradient id="pf-sheen" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stop-color="#fff" stop-opacity="0" />
+                  <stop offset=".45" stop-color="#fff" stop-opacity=".95" />
+                  <stop offset="1" stop-color="#fff" stop-opacity="0" />
+                </linearGradient>
+                <marker id="pf-arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                  <path d="M0 1.5 L8 5 L0 8.5" fill="none" stroke="#1546b8" stroke-width="1.4" />
+                </marker>
+              </defs>
+              <g class="pf-grid" aria-hidden="true">
+                <path d="M30 70 H640 M30 200 H640" />
+              </g>
+              <path class="pf-body draw" d="M82 70 L470 70 C518 70 550 95 556 122 C562 123 568 125 576 125 L590 125 C598 125 602 130 602 135 C602 140 598 145 590 145 L576 145 C568 145 562 147 556 148 C550 175 518 200 470 200 L82 200" fill="url(#pf-fill)" />
+              <path class="pf-sheen" d="M104 84 L462 84" stroke="url(#pf-sheen)" />
+              <path class="pf-sheen thin" d="M120 188 L430 188" stroke="url(#pf-sheen)" />
+              <ellipse class="pf-rim draw" cx="78" cy="135" rx="11" ry="72" />
+              <ellipse class="pf-rim-in draw" cx="78" cy="135" rx="5" ry="64" />
+              <g class="pf-dim">
+                <line x1="330" y1="76" x2="330" y2="194" marker-start="url(#pf-arrow)" marker-end="url(#pf-arrow)" />
+                <rect x="296" y="122" width="68" height="26" rx="13" />
+                <text x="330" y="140" text-anchor="middle">52 mm</text>
+              </g>
+              <g class="pf-callouts">
+                <path d="M604 135 L630 135 L630 52" /><circle cx="630" cy="40" r="12" /><text x="630" y="44.5" text-anchor="middle">1</text>
+                <path d="M200 70 L200 30" /><circle cx="200" cy="20" r="12" /><text x="200" y="24.5" text-anchor="middle">2</text>
+                <path d="M330 194 L330 236" class="dim-lead" /><circle cx="330" cy="248" r="12" /><text x="330" y="252.5" text-anchor="middle">3</text>
+                <path d="M470 168 L520 236" /><circle cx="526" cy="248" r="12" /><text x="526" y="252.5" text-anchor="middle">4</text>
+              </g>
+            </svg>
+            <figcaption>
+              <ol class="profile-legend">
+                <li><b>1</b>储精囊</li>
+                <li><b>2</b>直壁平面结构</li>
+                <li><b>3</b>标称宽度 52mm</li>
+                <li><b>4</b>无色透明 · 天然橡胶胶乳</li>
+              </ol>
+              <p class="profile-note">结构示意，非实际比例。</p>
+            </figcaption>
+          </figure>
+
+          <dl class="facts">
+            <div class="fact fact-wide"><dt>产品名称</dt><dd>杜蕾斯隐薄空气套 <span class="latin">AiR Feel</span></dd></div>
+            <div class="fact"><dt>标称宽度</dt><dd class="fact-num">52<small>mm</small></dd></div>
+            <div class="fact"><dt>储存期</dt><dd class="fact-num">5<small>年</small></dd></div>
+            <div class="fact"><dt>主要成分</dt><dd>天然橡胶胶乳</dd></div>
+            <div class="fact"><dt>结构</dt><dd>直壁平面结构，有储精囊</dd></div>
+            <div class="fact"><dt>外观</dt><dd>无色透明，有香味</dd></div>
+            <div class="fact"><dt>润滑</dt><dd>润滑型，润滑剂未添加杀精剂</dd></div>
+            <div class="fact"><dt>产品规格</dt><dd>3只装 · 6只装 · 16只装</dd></div>
+            <div class="fact"><dt>医疗器械注册证</dt><dd class="mono">鲁械注准20162180063</dd></div>
+            <div class="fact fact-wide fact-link">
+              <dt>资料来源</dt>
+              <dd>杜蕾斯中国官网 · 产品页（2026年10月查阅）<a class="text-link" href="https://www.durex.com.cn/products-air/air" target="_blank" rel="noopener noreferrer">查看官方产品资料 <span aria-hidden="true">↗</span></a></dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 · Pack selection -->
+    <section class="packs" id="packs" aria-labelledby="packsTitle" data-scene="2">
+      <div class="packs-panel">
+        <p class="section-kicker on-dark">03 · 规格选择</p>
+        <h2 class="section-title on-dark" id="packsTitle">选一盒，<br />让感受先到</h2>
+
+        <fieldset class="pack-picker">
+          <legend class="sr-only">选择包装规格</legend>
+          <label class="pack-opt">
+            <input type="radio" name="pack" value="3" checked />
+            <span class="po-num">3</span><span class="po-unit">只装</span>
+          </label>
+          <label class="pack-opt">
+            <input type="radio" name="pack" value="6" />
+            <span class="po-num">6</span><span class="po-unit">只装</span>
+          </label>
+          <label class="pack-opt">
+            <input type="radio" name="pack" value="16" />
+            <span class="po-num">16</span><span class="po-unit">只装</span>
+          </label>
+          <span class="pack-thumb" aria-hidden="true"></span>
+        </fieldset>
+
+        <div class="pack-summary" id="packSummary" aria-live="polite">
+          <p class="ps-tag" data-ps="tag">轻装初识</p>
+          <h3 class="ps-title"><span data-ps="title">杜蕾斯隐薄空气套 AiR Feel · 3只装</span></h3>
+          <p class="ps-desc" data-ps="desc">小盒随身，适合第一次认识 AiR。</p>
+          <ul class="ps-list">
+            <li><span>数量</span><b data-ps="count">3 只</b></li>
+            <li><span>包装</span><b data-ps="box">方形盒装</b></li>
+            <li><span>同款参数</span><b>标称宽度 52mm · 润滑型 · 有储精囊</b></li>
+            <li><span>价格与库存</span><b>以官方渠道页面为准</b></li>
+          </ul>
+          <p class="ps-note" data-ps="note">包装图形依据官方产品图重新绘制，仅作示意。</p>
+          <div class="ps-actions">
+            <a class="btn btn-silver" data-ps="buy" href="https://www.durex.com.cn/buy" target="_blank" rel="noopener noreferrer">打开官方店铺<span class="ext" aria-hidden="true">↗</span></a>
+            <button class="btn btn-ghost" type="button" id="copyName"><span id="copyLabel">复制商品名</span></button>
+          </div>
+          <p class="ps-route" data-ps="route">将打开杜蕾斯官网“精选店铺”页；请在店内确认是否为 3只装。</p>
+        </div>
+      </div>
+
+      <div class="drag-zone packs-drag" data-drag-zone="packs" tabindex="0" role="slider" aria-label="旋转所选规格的包装：左右拖动或使用方向键" aria-valuemin="-180" aria-valuemax="180" aria-valuenow="0" aria-valuetext="正面">
+        <div class="packs-tools">
+          <button class="chip" type="button" id="flipBtn" aria-pressed="false">翻到背面</button>
+          <button class="chip" type="button" data-spin>环视一周</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 · FAQ -->
+    <section class="faq" id="faq" aria-labelledby="faqTitle">
+      <div class="wrap faq-wrap">
+        <header class="section-head">
+          <p class="section-kicker">04 · 常见问题</p>
+          <h2 class="section-title" id="faqTitle">简单问，直接答</h2>
+          <button class="text-btn" type="button" id="faqToggleAll" aria-pressed="false">全部展开</button>
+        </header>
+        <div class="faq-list" id="faqList">
+          <div class="qa">
+            <h3><button type="button" aria-expanded="false" aria-controls="qa1" id="qa1b"><span>“薄度升级”是和什么比较？</span><i aria-hidden="true"></i></button></h3>
+            <div class="qa-a" id="qa1" role="region" aria-labelledby="qa1b" hidden><p>比较对象是上一代杜蕾斯AiR隐薄空气<sup>®</sup>套。官方产品页没有公布具体厚度数值，本页也不作推测或与其他品牌比较。</p></div>
+          </div>
+          <div class="qa">
+            <h3><button type="button" aria-expanded="false" aria-controls="qa2" id="qa2b"><span>能做到100%避孕或防病吗？</span><i aria-hidden="true"></i></button></h3>
+            <div class="qa-a" id="qa2" role="region" aria-labelledby="qa2b" hidden><p>不能。官方说明：正确使用避孕套能有效避孕，可降低感染艾滋病和其他性病的几率；目前没有一种避孕方式可达到100%有效避孕及预防性病和艾滋病的感染。</p></div>
+          </div>
+          <div class="qa">
+            <h3><button type="button" aria-expanded="false" aria-controls="qa3" id="qa3b"><span>标称宽度 52mm 指什么？</span><i aria-hidden="true"></i></button></h3>
+            <div class="qa-a" id="qa3" role="region" aria-labelledby="qa3b" hidden><p>这是产品标注的尺寸参数，指平放时的宽度。尺寸是否合适因人而异，请以包装标注和自身体验为参考。</p></div>
+          </div>
+          <div class="qa">
+            <h3><button type="button" aria-expanded="false" aria-controls="qa4" id="qa4b"><span>有润滑吗？含杀精剂吗？</span><i aria-hidden="true"></i></button></h3>
+            <div class="qa-a" id="qa4" role="region" aria-labelledby="qa4b" hidden><p>为润滑型产品，润滑剂未添加杀精剂。如需额外润滑，请选择水性或硅基润滑剂，避免凡士林、婴儿油等油性产品，以免影响乳胶。</p></div>
+          </div>
+          <div class="qa">
+            <h3><button type="button" aria-expanded="false" aria-controls="qa5" id="qa5b"><span>对乳胶过敏可以使用吗？</span><i aria-hidden="true"></i></button></h3>
+            <div class="qa-a" id="qa5" role="region" aria-labelledby="qa5b" hidden><p>本品主要成分为天然橡胶胶乳。对天然胶乳过敏者请勿使用；如有疑问，请阅读产品说明书或咨询医生、药师。</p></div>
+          </div>
+          <div class="qa">
+            <h3><button type="button" aria-expanded="false" aria-controls="qa6" id="qa6b"><span>怎么储存？能放多久？</span><i aria-hidden="true"></i></button></h3>
+            <div class="qa-a" id="qa6" role="region" aria-labelledby="qa6b" hidden><p>官方标注储存期为5年。请存放在阴凉干燥处，避免阳光直射、高温和尖锐物品；每次使用前检查有效期和独立包装是否完好。</p></div>
+          </div>
+          <div class="qa">
+            <h3><button type="button" aria-expanded="false" aria-controls="qa7" id="qa7b"><span>去哪里买到正品？</span><i aria-hidden="true"></i></button></h3>
+            <div class="qa-a" id="qa7" role="region" aria-labelledby="qa7b" hidden><p>杜蕾斯官网的“精选店铺”页列出了官方旗舰店与授权渠道；官网也提供产品防伪查询。<a class="text-link" href="https://www.durex.com.cn/buy" target="_blank" rel="noopener noreferrer">打开精选店铺 <span aria-hidden="true">↗</span></a></p></div>
+          </div>
+          <div class="qa">
+            <h3><button type="button" aria-expanded="false" aria-controls="qa8" id="qa8b"><span>这是杜蕾斯官方网站吗？</span><i aria-hidden="true"></i></button></h3>
+            <div class="qa-a" id="qa8" role="region" aria-labelledby="qa8b" hidden><p>不是。这是一个非官方的创意展示页，不销售商品、不收集个人信息。产品信息、价格、库存与活动请以杜蕾斯官方渠道为准。</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 · Buy -->
+    <section class="buy" id="buy" aria-labelledby="buyTitle">
+      <div class="wrap buy-wrap">
+        <div class="buy-main">
+          <p class="section-kicker on-dark">05 · 官方选购</p>
+          <h2 class="buy-title" id="buyTitle">在官方渠道，<br />遇见 AiR</h2>
+          <p class="buy-sub">本页不提供下单或支付。下方按钮打开杜蕾斯官网的店铺列表，规格、价格与库存请在店内确认。</p>
+          <div class="buy-actions">
+            <a class="btn btn-silver btn-lg" href="https://www.durex.com.cn/buy" target="_blank" rel="noopener noreferrer">打开官方店铺<span class="ext" aria-hidden="true">↗</span></a>
+            <a class="btn btn-ghost btn-lg" href="https://www.durex.com.cn/products-air/air" target="_blank" rel="noopener noreferrer">官方产品资料<span class="ext" aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="buy-side">
+          <div class="channels">
+            <h3>官网列出的官方旗舰店</h3>
+            <ul>
+              <li><span>天猫</span>durex杜蕾斯官方旗舰店</li>
+              <li><span>京东</span>durex杜蕾斯京东自营旗舰店</li>
+              <li><span>拼多多</span>durex杜蕾斯官方旗舰店</li>
+            </ul>
+            <p>另有天猫超市、屈臣氏、万宁等线上线下授权渠道，完整名单见官网“精选店铺”。</p>
+          </div>
+          <div class="safety" role="note" aria-label="安全使用提示">
+            <h3>安全使用提示</h3>
+            <ul>
+              <li>正确使用能有效避孕，并降低感染艾滋病和其他性病的几率；没有任何避孕方式能做到100%有效。</li>
+              <li>使用前请阅读说明书，检查有效期与独立包装；每只仅限使用一次。</li>
+              <li>天然胶乳过敏者请勿使用。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-grid">
+      <div class="footer-brand">
+        <svg class="brand-mark" aria-hidden="true"><use href="#durex-mark" /></svg>
+        <p class="footer-claim">AiR · 让感受先到</p>
+        <p class="footer-small">面向成年消费者的产品创意展示。</p>
+      </div>
+      <nav class="footer-col" aria-label="页脚导航">
+        <h4>本页</h4>
+        <a href="#hero">开场</a>
+        <a href="#feel">感受</a>
+        <a href="#specs">产品资料</a>
+        <a href="#packs">规格选择</a>
+        <a href="#faq">常见问题</a>
+      </nav>
+      <div class="footer-col">
+        <h4>官方信息</h4>
+        <a href="https://www.durex.com.cn/products-air/air" target="_blank" rel="noopener noreferrer">AiR Feel 官方产品页 ↗</a>
+        <a href="https://www.durex.com.cn/buy" target="_blank" rel="noopener noreferrer">官方精选店铺 ↗</a>
+        <p class="footer-small">医疗器械注册证：鲁械注准20162180063</p>
+      </div>
+      <div class="footer-col footer-legal">
+        <h4>说明</h4>
+        <p>本页为非官方创意展示，与杜蕾斯品牌方无关联，不构成官方广告或销售。</p>
+        <p>“杜蕾斯”“durex”“AiR”等商标归其权利人所有。包装图形依据官方产品图重新绘制，仅作示意；16只装外观以实物为准。</p>
+        <p>请勿将本页内容作为医疗建议。使用前请阅读产品说明书。</p>
+      </div>
+    </div>
+    <div class="wrap footer-bottom">
+      <p>© 2026 概念作品 · 仅供学习与展示</p>
+      <button class="to-top" type="button" id="toTop">返回顶部 <span aria-hidden="true">↑</span></button>
+    </div>
+  </footer>
+
+  <noscript><p class="noscript">页面的交互需要 JavaScript；文字内容仍可阅读。</p></noscript>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

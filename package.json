@@ -1,0 +1,21 @@
+{
+  "name": "durex-air-feel-concept",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Durex AiR「让感受先到」— 非官方创意展示网站（杜蕾斯隐薄空气套 AiR Feel）",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5190",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 5191"
+  },
+  "dependencies": {
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "vite": "8.3.3"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}
